@@ -1,0 +1,3 @@
+# Virtual env lives at the repo root, outside cutzamala-eo
+.venv/
+.obsidian/
