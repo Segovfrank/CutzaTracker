@@ -1,0 +1,26 @@
+[project]
+name = "reservoir_storage_eo"
+version = "0.0.1"
+description = "Estimate the stored water of Cutzamala System reservoirs, starting with Valle de Bravo, from Sentinel-2 water surface area. An area-volume curve is fitted against CONAGUA's official SINA records."
+authors = [
+  { name = "Francisco Segovia" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License"
+]
+requires-python = ">=3.10"
+
+
+[tool.ruff]
+line-length = 99
+src = ["."]
+
+[tool.ruff.lint]
+extend-select = ["I"]  # Add import sorting
+
+[tool.ruff.lint.isort]
+known-first-party = ["scripts"]
+force-sort-within-sections = true
