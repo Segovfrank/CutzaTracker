@@ -26,7 +26,7 @@ def save_collection_to_local(new_features: list[dict], year: int, month: int):
         "type": "FeatureCollection",
         "features": merge_features(new_features, existing_collection.get("features", []))
     }
-    is_successful = json_utils.save_json_to_local(data=collection_json, filename=f"collection_{year}_{month:02d}", dir=target_dir)
+    is_successful = json_utils.save_json_to_local(data=collection_json, filename=f"collection_{month:02d}", dir=target_dir)
     if is_successful:
         save_latest_date(collection_json)
         
@@ -34,10 +34,12 @@ def merge_features(new: list[dict], old: list[dict]) -> list[dict]:
     # Dedup by feature id
     features_by_id = {}
     
+    # Populate from existing
     for feature in old:
         feature_id = feature["id"]
         features_by_id[feature_id] = feature
     
+    # Populate new features
     for feature in new:
         feature_id = feature["id"]
         features_by_id[feature_id] = feature

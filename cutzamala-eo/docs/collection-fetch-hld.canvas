@@ -1,21 +1,17 @@
 {
 	"nodes":[
-		{"id":"09c2428d8f408f7c","type":"text","text":"### SentinelCoordinator\n- Call our cache for the month\n  - Do we have anything?\n\t    - Yes: Check the last date of the cache\n\t    - No: Fetch for the whole month\n- Receive a uncached response?\n\t- Yes: Save to Cache Manager","x":-251,"y":-60,"width":462,"height":240},
-		{"id":"dbc92de66200467d","type":"text","text":"### Entry Point\nfetch_latest()\n- Get the latest from current month starting from the last cached response.","x":-280,"y":-320,"width":520,"height":180},
-		{"id":"d3b171fbd4b619d0","type":"text","text":"### SentinelApiFetcher\n- fetch(month, cache)\n\t- resolve start date\n\t- handle_error","x":65,"y":305,"width":351,"height":190},
-		{"id":"897e7346585ef117","type":"text","text":"### SentinelRequestUtils\n- build_body()\n- handle_error()","x":485,"y":555,"width":351,"height":160},
-		{"id":"f5028c715bdc8096","type":"text","text":"### SentinelFetchDateResolver\n- get_start_date","x":585,"y":330,"width":351,"height":140},
-		{"id":"1bfb4320865e336c","type":"text","text":"### CacheLoader\n\n- Load from file json\n- Parse into data (collection)","x":-682,"y":544,"width":250,"height":157},
-		{"id":"37dbfa3a39829426","type":"text","text":"### CacheWriter\n- Parse from ItemCollection to Json\n- Save Json to disk","x":-376,"y":544,"width":250,"height":157},
-		{"id":"cd73a56f1dfaebc5","type":"text","text":"### SentinelCacheManager\n- Get cache\n- Save responses","x":-419,"y":305,"width":336,"height":136}
+		{"id":"09c2428d8f408f7c","type":"text","text":"### SentinelFetcher\n- Call our cache for the month\n  - Do we have anything?\n\t    - Yes: Check the last date of the cache\n\t    - No: Fetch for the whole month\n- Receive a uncached response?\n\t- Yes: Save to Cache Manager","x":-251,"y":-60,"width":462,"height":240},
+		{"id":"dbc92de66200467d","type":"text","text":"### Entry Point\nfetch()\n- Get the latest from current month starting from the last cached response.","x":-280,"y":-320,"width":520,"height":180},
+		{"id":"d3b171fbd4b619d0","type":"text","text":"### SentinelApi\n- fetch(start, end, intersect)\n\t- get date interval\n\t- request by pages\n\t- report_error","x":65,"y":305,"width":351,"height":190},
+		{"id":"897e7346585ef117","type":"text","text":"### RequestUtils\n- build_body()\n","x":485,"y":555,"width":351,"height":160},
+		{"id":"1bfb4320865e336c","type":"text","text":"### CacheLoader\n\n- Load from file json\n- Parse into data (collection)","x":-680,"y":305,"width":250,"height":157},
+		{"id":"37dbfa3a39829426","type":"text","text":"### CacheWriter\n- Parse from ItemCollection to Json\n- Save Json to disk","x":-340,"y":305,"width":250,"height":157}
 	],
 	"edges":[
 		{"id":"c7933b6e3bc9a532","fromNode":"dbc92de66200467d","fromSide":"bottom","toNode":"09c2428d8f408f7c","toSide":"top"},
-		{"id":"0a72a4cb06a5e505","fromNode":"cd73a56f1dfaebc5","fromSide":"left","toNode":"1bfb4320865e336c","toSide":"top"},
-		{"id":"a19a519bbffc853b","fromNode":"cd73a56f1dfaebc5","fromSide":"bottom","toNode":"37dbfa3a39829426","toSide":"top"},
 		{"id":"30e3d0201ab051d2","fromNode":"897e7346585ef117","fromSide":"left","toNode":"d3b171fbd4b619d0","toSide":"bottom"},
-		{"id":"9d75d655908bd0d0","fromNode":"f5028c715bdc8096","fromSide":"left","toNode":"d3b171fbd4b619d0","toSide":"right"},
 		{"id":"9c42e9b5a6e8b00f","fromNode":"d3b171fbd4b619d0","fromSide":"top","toNode":"09c2428d8f408f7c","toSide":"bottom","label":"online"},
-		{"id":"98cc4d076737cf8a","fromNode":"cd73a56f1dfaebc5","fromSide":"top","toNode":"09c2428d8f408f7c","toSide":"bottom","label":"cache"}
+		{"id":"6d071dd37bad001c","fromNode":"09c2428d8f408f7c","fromSide":"left","toNode":"1bfb4320865e336c","toSide":"top"},
+		{"id":"b7f70af047278096","fromNode":"09c2428d8f408f7c","fromSide":"left","toNode":"37dbfa3a39829426","toSide":"top"}
 	]
 }

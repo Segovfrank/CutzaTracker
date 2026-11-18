@@ -1,4 +1,4 @@
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from httpx import AsyncClient, Response
 import sys
 from ..utils import request_utils
