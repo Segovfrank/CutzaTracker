@@ -6,7 +6,6 @@ authors = [
   { name = "Francisco Segovia" },
 ]
 license = { file = "LICENSE" }
-readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License"

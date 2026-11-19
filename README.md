@@ -23,7 +23,7 @@ Due to time constraints, only Valle de Bravo is implemented, not the rest of the
 
 Imagery is more robust than I thought: using reflectance and other algorithms you can calculate and estimate sizes. There's no need for ML models for everything; a mathematical model was enough to make the calculations needed. Data also needs filters and gates, so only clean (clear) days are measured.
 
-The full story (scope, roadmap, how each step was verified, learnings, and how AI was used) is in [Project_Overview.md](Project_Overview.md).
+The full story (scope, roadmap, how each step was verified, learnings, and how AI was used) is in [Project_Overview.md](reservoir-storage-eo/Project_Overview.md).
 
 ## Pipeline
 
@@ -39,20 +39,23 @@ new month             ─► water_level/estimate.py  storage hm³ and % of NAMO
 ## Project organization
 
 ```
-├── docs/
-│   ├── collection-fetch-hld.canvas   <- How Sentinel collections are fetched and cached
-│   └── api_usage/                    <- Copernicus STAC and CONAGUA SINA API notes and samples
-├── scripts/
-│   ├── sentinel/          <- STAC search client and month cache
-│   ├── image_processing/  <- Band loading, reflectance, NDWI, renders
-│   ├── water_level/       <- Water area, SINA labels, area–volume model, estimates
-│   └── utils/             <- Date and JSON helpers
-├── website/               <- Web UI: server.py plus the page
-├── Project_Overview.md    <- Objective, roadmap, verification, learnings
-├── env-template           <- Copy to .env and add your Copernicus keys
-├── requirements.txt       <- Runtime dependencies
-├── requirements-dev.txt   <- Runtime + ruff and pytest
-└── pyproject.toml         <- Project metadata and ruff settings
+├── README.md                  <- This file
+├── .github/workflows/pages.yml <- Publishes the website to GitHub Pages
+└── reservoir-storage-eo/      <- The project: run every command from here
+    ├── docs/
+    │   ├── collection-fetch-hld.canvas   <- How Sentinel collections are fetched and cached
+    │   └── api_usage/                    <- Copernicus STAC and CONAGUA SINA API notes and samples
+    ├── scripts/
+    │   ├── sentinel/          <- STAC search client and month cache
+    │   ├── image_processing/  <- Band loading, reflectance, NDWI, renders
+    │   ├── water_level/       <- Water area, SINA labels, area–volume model, estimates
+    │   └── utils/             <- Date and JSON helpers
+    ├── website/               <- Web UI: server.py, the page, and export.py for the static showcase
+    ├── Project_Overview.md    <- Objective, roadmap, verification, learnings
+    ├── env-template           <- Copy to .env and add your Copernicus keys
+    ├── requirements.txt       <- Runtime dependencies
+    ├── requirements-dev.txt   <- Runtime + ruff and pytest
+    └── pyproject.toml         <- Project metadata and ruff settings
 ```
 
 Each `scripts/*/data/` folder holds that stage's cache and outputs. They're gitignored.
