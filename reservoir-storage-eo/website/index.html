@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Valle de Bravo storage</title>
+  <meta name="description" content="Monthly estimate of the water stored in Valle de Bravo, measured from Sentinel-2 satellite images.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="bar">
+    <div class="column bar-inner">
+      <a class="brand" href="/" aria-label="Reservoir storage, home">
+        <svg class="mark" viewBox="0 0 20 20" aria-hidden="true">
+          <circle cx="10" cy="10" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M2.4 12.2h15.2a8.25 8.25 0 0 1-15.2 0z" fill="currentColor"/>
+        </svg>
+        <span>Reservoir storage</span>
+        <span class="scope">Valle de Bravo · Cutzamala System</span>
+      </a>
+      <span class="sources">Sentinel-2 L2A · CONAGUA SINA</span>
+    </div>
+  </header>
+
+  <main class="column">
+    <div class="title-row">
+      <div>
+        <h1>Valle de Bravo storage</h1>
+        <p class="subline" id="finding">Pick a month to estimate how much water the lake held.</p>
+      </div>
+      <form class="picker" id="picker">
+        <label for="month">Month</label>
+        <input type="month" id="month" name="month" required pattern="\d{4}-\d{2}" placeholder="2025-10">
+        <button type="submit" class="primary" id="go">
+          <span class="spinner" aria-hidden="true"></span>
+          <span class="go-label">Estimate</span>
+        </button>
+      </form>
+    </div>
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+
+    <section class="kpis panel" id="kpis" aria-label="Month summary">
+      <div class="kpi">
+        <span class="label">Estimated storage</span>
+        <span class="value lead num" id="k-estimate">—</span>
+        <span class="note" id="k-estimate-note">&nbsp;</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Fill</span>
+        <span class="value num" id="k-fill">—</span>
+        <span class="note">of NAMO, <span class="num" id="k-namo"></span> hm³</span>
+      </div>
+      <div class="kpi">
+        <span class="label">CONAGUA reported</span>
+        <span class="value num" id="k-conagua">—</span>
+        <span class="note" id="k-conagua-note">&nbsp;</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Clear passes</span>
+        <span class="value num" id="k-clear">—</span>
+        <span class="note">95% of the lake visible or more</span>
+      </div>
+    </section>
+
+    <div class="row">
+      <section class="panel history">
+        <header class="panel-head">
+          <h2>Storage by month</h2>
+          <div class="legend" id="history-legend"></div>
+        </header>
+        <div class="chart" id="history-chart"></div>
+        <p class="block-message" id="history-message" hidden></p>
+      </section>
+
+      <section class="panel gauge-panel">
+        <header class="panel-head">
+          <h2>How full</h2>
+          <span class="meta" id="gauge-month"></span>
+        </header>
+        <div class="gauge" id="gauge">
+          <div class="track"><span class="fill" id="gauge-fill"></span><span class="tick" id="gauge-tick" hidden></span></div>
+          <div class="ends num"><span>0</span><span id="gauge-namo">NAMO</span></div>
+        </div>
+        <dl class="facts">
+          <div><dt>Estimate</dt><dd class="num" id="g-estimate">—</dd></div>
+          <div><dt>CONAGUA</dt><dd class="num" id="g-conagua">—</dd></div>
+          <div><dt id="g-lastyear-label">Same month, a year before</dt><dd class="num" id="g-lastyear">—</dd></div>
+        </dl>
+        <p class="model-line num" id="model-line"></p>
+      </section>
+    </div>
+
+    <section class="panel scenes">
+      <header class="panel-head">
+        <h2>Satellite passes</h2>
+        <span class="meta" id="scenes-count"></span>
+      </header>
+      <div class="table-frame">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col" class="num">Lake clear</th>
+              <th scope="col" class="num">Water area</th>
+              <th scope="col" class="num">Estimate</th>
+              <th scope="col" class="num">Fill</th>
+              <th scope="col" class="num">CONAGUA</th>
+              <th scope="col" class="num">Difference</th>
+            </tr>
+          </thead>
+          <tbody id="scenes-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel about" aria-labelledby="about-title">
+      <header class="panel-head">
+        <h2 id="about-title">About this project</h2>
+        <a class="meta link" href="/Project_Overview.md">Read the full project overview</a>
+      </header>
+      <div class="about-text">
+        <div>
+          <h3>Objective</h3>
+          <p>The objective of this project was to learn some fundamental concepts of Geospatial Science and Earth
+            Observation: Python libraries and satellite imagery, including bands, STAC and the Copernicus API.
+            It also provides a way to estimate the reservoir storage, as the SINA API stopped providing data after
+            April 23, 2025.</p>
+          <p>Due to time constraints I could not implement the rest of the Cutzamala reservoirs, but I implemented the
+            estimation for the most important one: Valle de Bravo.</p>
+        </div>
+        <div>
+          <h3>Conclusion</h3>
+          <p>Imagery is more robust than I thought. It's amazing to me that using reflectance and other algorithms you
+            can calculate and estimate sizes. No need for ML models for everything: in the end, you can use
+            mathematical models to make the calculations you need.</p>
+          <p>This was extremely useful for me as an introduction to understand how a geospatial pipeline works, and
+            the standards and systems behind things I did not know before.</p>
+        </div>
+      </div>
+
+      <h3 class="progress-title">Progress, step by step</h3>
+      <div class="progress">
+        <figure>
+          <img src="img/quicklook_2024-01-31.jpg" alt="Low-resolution preview of a whole Sentinel-2 tile with scattered clouds" width="343" height="343" loading="lazy">
+          <figcaption><span class="step num">1</span>First Copernicus response: the quicklook preview of a whole tile, 31 Jan 2024.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/tci_2024-01-31.png" alt="True colour image of Valle de Bravo with a low lake and exposed shores" width="850" height="803" loading="lazy">
+          <figcaption><span class="step num">2</span>First bands loaded from S3, read only inside the lake's bounding box. Same day, low water.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/rgb_2025-03-01.png" alt="True colour image of Valle de Bravo, fuller than a year before" width="850" height="803" loading="lazy">
+          <figcaption><span class="step num">3</span>Bands converted to reflectance, shown as true colour (B04, B03, B02). 1 Mar 2025.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/false_2025-03-01.png" alt="False colour image: vegetation bright red, the lake dark navy" width="850" height="803" loading="lazy">
+          <figcaption><span class="step num">4</span>False colour, NIR shown as red. Water absorbs NIR, so the lake goes dark.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/ndwi_2025-03-01.png" alt="NDWI map: the lake in blue, land in red" width="850" height="803" loading="lazy">
+          <figcaption><span class="step num">5</span>NDWI from green and NIR: water blue, land red. Otsu picks the cutoff; the lake measures 16.31 km².</figcaption>
+        </figure>
+        <figure>
+          <img src="img/rgb_2025-04-15.png" alt="Hazy true colour image of the lake with clouds over the eastern shore" width="850" height="803" loading="lazy">
+          <figcaption><span class="step num">6</span>Too cloudy: only 94.8% of the lake is clear, under the 95% gate, so 15 Apr 2025 is dropped.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <footer class="foot">
+      Estimates come from the lake's water area in Sentinel-2 images (Copernicus), turned into volume with an
+      area–volume curve fitted on CONAGUA's SINA records. SINA has published no reports since 23 April 2025.
+    </footer>
+  </main>
+
+  <script src="charts.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

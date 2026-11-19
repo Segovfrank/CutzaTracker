@@ -1,0 +1,3 @@
+ENDPOINT=<copernicus API base>
+ACCESS_KEY=<add your key>
+SECRET_KEY=<add your secret copernicus key>
