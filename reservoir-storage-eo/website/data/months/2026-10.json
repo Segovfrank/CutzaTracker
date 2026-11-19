@@ -1,0 +1,1 @@
+{"month": "2026-10", "source": "cache", "namo_hm3": 394.93, "model": {"a": 0.015918383972912467, "b": 3.4753703093512134, "pairs": 210}, "scenes": [{"date": "2026-10-17", "clear_fraction": 0.9754, "area_km2": 17.488, "estimate_hm3": 331.8036636754346, "conagua_hm3": null}], "estimate_hm3": 331.8036636754346, "conagua_hm3": null, "conagua_error": null}

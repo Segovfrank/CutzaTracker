@@ -195,3 +195,14 @@ h3 { margin: 0 0 8px; font-size: 14px; line-height: 20px; font-weight: 500; }
 .bar-end { display: flex; align-items: center; gap: 16px; flex: none; }
 .code-link { font-size: 13px; white-space: nowrap; }
 .head-links { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+
+/* Observations: four findings, each led by its number */
+.observations { margin-top: var(--gap); }
+.findings { list-style: none; margin: 0; padding: 8px 20px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
+.findings li { display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-top: 1px solid var(--rule); }
+.findings li:nth-child(-n + 2) { border-top: 0; }
+.findings p { margin: 0; max-width: 62ch; font-size: 15px; line-height: 24px; }
+@media (max-width: 640px) {
+  .findings { grid-template-columns: 1fr; }
+  .findings li:nth-child(2) { border-top: 1px solid var(--rule); }
+}

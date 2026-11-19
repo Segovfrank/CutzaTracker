@@ -134,7 +134,7 @@ function render(data) {
   let finding;
   if (data.estimate_hm3 == null) {
     finding = data.scenes.length === 0
-      ? `No Sentinel-2 pass over the lake in ${longMonth(key)}.`
+      ? `No usable Sentinel-2 pass in ${longMonth(key)}: every tile was over 20% cloud.`
       : `No clear pass in ${longMonth(key)}: clouds hid more than 5% of the lake every time.`;
   } else {
     finding = `${longMonth(key)}: about ${whole.format(data.estimate_hm3)} hm³, ${pct.format(data.estimate_hm3 / namo)} of NAMO`;
@@ -186,7 +186,7 @@ function render(data) {
   body.innerHTML = '';
   $('scenes-count').textContent = `${data.scenes.length} ${data.scenes.length === 1 ? 'pass' : 'passes'}`;
   if (data.scenes.length === 0) {
-    body.innerHTML = `<tr><td class="empty" colspan="7">Sentinel-2 has no pass over the lake in ${longMonth(key)}.</td></tr>`;
+    body.innerHTML = `<tr><td class="empty" colspan="7">No Sentinel-2 pass with under 20% cloud over the tile in ${longMonth(key)}, common in the rainy season.</td></tr>`;
   }
   for (const s of [...data.scenes].sort((a, b) => a.date.localeCompare(b.date))) {
     const tr = document.createElement('tr');
@@ -209,7 +209,13 @@ function render(data) {
 async function run(key) {
   if (STATIC && history && !history.showcase_months.includes(key)) {
     const months = history.showcase_months;
-    showError(key, new Error(`this showcase covers ${longMonth(months[0])} to ${longMonth(months[months.length - 1])}`));
+    if (key < months[0] || key > months[months.length - 1]) {
+      showError(key, new Error(`this showcase covers ${longMonth(months[0])} to ${longMonth(months[months.length - 1])}`));
+      return;
+    }
+    // In range but nothing exported: the search found no pass (every tile over 20% cloud)
+    setBusy(false);
+    render({ month: key, scenes: [], estimate_hm3: null, conagua_hm3: null, conagua_error: null, namo_hm3: history.namo_hm3, model: history.model });
     return;
   }
   setBusy(true, key);

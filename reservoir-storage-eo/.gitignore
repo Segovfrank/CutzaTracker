@@ -192,3 +192,5 @@ cython_debug/
 
 # Python Data from Stac
 scripts/*/data/
+
+.taste-skill/
