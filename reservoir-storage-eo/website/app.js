@@ -11,6 +11,11 @@ const longMonth = (key) => asDate(key).toLocaleDateString('en', { month: 'long',
 const shortMonth = (key) => asDate(key).toLocaleDateString('en', { month: 'short', year: 'numeric' });
 const yearBefore = (key) => `${Number(key.slice(0, 4)) - 1}${key.slice(4)}`;
 
+// On GitHub Pages there is no server: read the JSON that `python -m website.export` wrote
+const STATIC = !['localhost', '127.0.0.1'].includes(location.hostname);
+const historyUrl = STATIC ? 'data/history.json' : '/api/history';
+const estimateUrl = (key) => (STATIC ? `data/months/${key}.json` : `/api/estimate?month=${encodeURIComponent(key)}`);
+
 let history = null;
 let current = null;
 let timer = null;
@@ -202,10 +207,15 @@ function render(data) {
 }
 
 async function run(key) {
+  if (STATIC && history && !history.showcase_months.includes(key)) {
+    const months = history.showcase_months;
+    showError(key, new Error(`this showcase covers ${longMonth(months[0])} to ${longMonth(months[months.length - 1])}`));
+    return;
+  }
   setBusy(true, key);
   try {
-    const data = await getJSON(`/api/estimate?month=${encodeURIComponent(key)}`);
-    if (data.source === 'satellite') history = await getJSON('/api/history').catch(() => history);
+    const data = await getJSON(estimateUrl(key));
+    if (data.source === 'satellite') history = await getJSON(historyUrl).catch(() => history);
     setBusy(false);
     render(data);
     try { localStorage.setItem('month', key); } catch {} // remembers the last month for this viewer only
@@ -221,7 +231,14 @@ async function init() {
   input.max = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
   try {
-    history = await getJSON('/api/history');
+    history = await getJSON(historyUrl);
+    if (STATIC && history.showcase_months.length) {
+      const months = history.showcase_months;
+      input.min = months[0];
+      input.max = months[months.length - 1];
+      $('showcase-note').hidden = false;
+      $('showcase-range').textContent = `${longMonth(input.min)} to ${longMonth(input.max)}`;
+    }
   } catch (error) {
     $('history-message').hidden = false;
     $('history-message').textContent = `Couldn't load the history: ${error.message}.`;
@@ -229,7 +246,8 @@ async function init() {
 
   let saved = null;
   try { saved = localStorage.getItem('month'); } catch {}
-  const start = saved || (history && history.latest) || input.max;
+  const inRange = saved && (!STATIC || (history && history.showcase_months.includes(saved)));
+  const start = (inRange && saved) || (history && history.latest) || input.max;
   input.value = start;
   drawHistory(start);
   run(start);

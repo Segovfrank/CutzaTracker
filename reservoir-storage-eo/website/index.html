@@ -13,7 +13,7 @@
 <body>
   <header class="bar">
     <div class="column bar-inner">
-      <a class="brand" href="/" aria-label="Reservoir storage, home">
+      <a class="brand" href="./" aria-label="Reservoir storage, home">
         <svg class="mark" viewBox="0 0 20 20" aria-hidden="true">
           <circle cx="10" cy="10" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <path d="M2.4 12.2h15.2a8.25 8.25 0 0 1-15.2 0z" fill="currentColor"/>
@@ -21,7 +21,10 @@
         <span>Reservoir storage</span>
         <span class="scope">Valle de Bravo · Cutzamala System</span>
       </a>
-      <span class="sources">Sentinel-2 L2A · CONAGUA SINA</span>
+      <div class="bar-end">
+        <span class="sources">Sentinel-2 L2A · CONAGUA SINA</span>
+        <a class="link code-link" href="https://github.com/Segovfrank/CutzaTracker">Code on GitHub</a>
+      </div>
     </div>
   </header>
 
@@ -41,6 +44,10 @@
       </form>
     </div>
     <p class="status" id="status" role="status" aria-live="polite"></p>
+    <p class="showcase-note" id="showcase-note" hidden>
+      A showcase measured ahead of time, covering <span id="showcase-range"></span>.
+      <a class="link" href="https://github.com/Segovfrank/CutzaTracker/tree/main/reservoir-storage-eo#getting-started">Run the project locally</a> to measure any month since 2019.
+    </p>
 
     <section class="kpis panel" id="kpis" aria-label="Month summary">
       <div class="kpi">
@@ -119,7 +126,10 @@
     <section class="panel about" aria-labelledby="about-title">
       <header class="panel-head">
         <h2 id="about-title">About this project</h2>
-        <a class="meta link" href="/Project_Overview.md">Read the full project overview</a>
+        <span class="head-links">
+          <a class="meta link" href="Project_Overview.md">Read the full project overview</a>
+          <a class="meta link" href="https://github.com/Segovfrank/CutzaTracker/tree/main/reservoir-storage-eo">Browse the code</a>
+        </span>
       </header>
       <div class="about-text">
         <div>
@@ -148,23 +158,23 @@
           <figcaption><span class="step num">1</span>First Copernicus response: the quicklook preview of a whole tile, 31 Jan 2024.</figcaption>
         </figure>
         <figure>
-          <img src="img/tci_2024-01-31.png" alt="True colour image of Valle de Bravo with a low lake and exposed shores" width="850" height="803" loading="lazy">
+          <img src="img/tci_2024-01-31.jpg" alt="True colour image of Valle de Bravo with a low lake and exposed shores" width="850" height="803" loading="lazy">
           <figcaption><span class="step num">2</span>First bands loaded from S3, read only inside the lake's bounding box. Same day, low water.</figcaption>
         </figure>
         <figure>
-          <img src="img/rgb_2025-03-01.png" alt="True colour image of Valle de Bravo, fuller than a year before" width="850" height="803" loading="lazy">
+          <img src="img/rgb_2025-03-01.jpg" alt="True colour image of Valle de Bravo, fuller than a year before" width="850" height="803" loading="lazy">
           <figcaption><span class="step num">3</span>Bands converted to reflectance, shown as true colour (B04, B03, B02). 1 Mar 2025.</figcaption>
         </figure>
         <figure>
-          <img src="img/false_2025-03-01.png" alt="False colour image: vegetation bright red, the lake dark navy" width="850" height="803" loading="lazy">
+          <img src="img/false_2025-03-01.jpg" alt="False colour image: vegetation bright red, the lake dark navy" width="850" height="803" loading="lazy">
           <figcaption><span class="step num">4</span>False colour, NIR shown as red. Water absorbs NIR, so the lake goes dark.</figcaption>
         </figure>
         <figure>
-          <img src="img/ndwi_2025-03-01.png" alt="NDWI map: the lake in blue, land in red" width="850" height="803" loading="lazy">
+          <img src="img/ndwi_2025-03-01.jpg" alt="NDWI map: the lake in blue, land in red" width="850" height="803" loading="lazy">
           <figcaption><span class="step num">5</span>NDWI from green and NIR: water blue, land red. Otsu picks the cutoff; the lake measures 16.31 km².</figcaption>
         </figure>
         <figure>
-          <img src="img/rgb_2025-04-15.png" alt="Hazy true colour image of the lake with clouds over the eastern shore" width="850" height="803" loading="lazy">
+          <img src="img/rgb_2025-04-15.jpg" alt="Hazy true colour image of the lake with clouds over the eastern shore" width="850" height="803" loading="lazy">
           <figcaption><span class="step num">6</span>Too cloudy: only 94.8% of the lake is clear, under the 95% gate, so 15 Apr 2025 is dropped.</figcaption>
         </figure>
       </div>
